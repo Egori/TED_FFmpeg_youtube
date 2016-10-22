@@ -61,7 +61,7 @@ public class PageDAO {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                result = rs.getString("text");
+                result = rs.getString("link_ted");
             }
             ps.close();
         } catch (SQLException e) {

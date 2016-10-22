@@ -33,13 +33,27 @@ public class ParseTED {
     private static String language = "en";
     private static String URL = "http://www.ted.com/talks";
     private static ArrayList pageLinks = new ArrayList();
-        static Connection con;
+    static Connection con;
+    static boolean nextFlag;
 
+    static pageDAO.PageDAO dao = new PageDAO(getConnection());
+    private static String lastPage = dao.getLastPage();
+
+    private static Connection getConnection() {
+        if (con == null) {
+            try {
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ted", "root", "root");
+            } catch (SQLException ex) {
+                Logger.getLogger(ParseTED.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+         return con;
+    }
 
     public void setLanguage(String language) {
         this.language = language;
     }
-    
+
     public static void Run() {
 
         Integer i = 0;
@@ -54,11 +68,12 @@ public class ParseTED {
         
 
     }
-
+        
     private static void getPageLinks(String URL) {
 
         String linkVid = "";
         String nextPage = "";
+        String linkPage;
         
         Document doc = null;
         try {
@@ -73,7 +88,13 @@ public class ParseTED {
 
         for (Element pageEl : linksPage) {
             linkVid = pageEl.attr("href");
-            pageLinks.add("http://www.ted.com" + linkVid);
+            linkPage = "http://www.ted.com" + linkVid;
+            if (linkPage.equals(lastPage) || lastPage == null) {
+                nextFlag = true;
+            }
+            if (nextFlag) {
+                pageLinks.add(linkPage);
+            }
         }
 
         //переход на следующую страницу
@@ -88,6 +109,10 @@ public class ParseTED {
         
         System.out.println("получено ссылок на видео: " + pageLinks.size());
         
+    }
+    
+    private static boolean isParsed(String URL){
+        return true;
     }
   
     private static void parse(String pageURL) {
@@ -114,6 +139,12 @@ public class ParseTED {
                     .get();
         } catch (IOException ex) {
             Logger.getLogger(ParseTED.class.getName()).log(Level.SEVERE, null, ex);
+           try {
+               Thread.sleep(3000);
+           } catch (InterruptedException ex1) {
+               Logger.getLogger(ParseTED.class.getName()).log(Level.SEVERE, null, ex1);
+           }
+            parse(pageURL);
         }
          
         // Получение значений сираницы
@@ -181,16 +212,9 @@ Pattern patternIndex = Pattern.compile("\"id\":(\\d*)");
         page.setTags(tags);
         page.setTitle(title);
         page.setTranscript(transcript);
-        
-         if (con == null) {
-            try {
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ted", "root", "root");
-            } catch (SQLException ex) {
-                Logger.getLogger(ParseTED.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        pageDAO.PageDAO pageDAO = new PageDAO(con);
-        pageDAO.updatePage(page);
+      
+               
+        dao.updatePage(page);
         
         System.out.println("next page " + pageURL);
 

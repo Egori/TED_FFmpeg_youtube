@@ -14,6 +14,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import pageDAO.PageDAO;
 
 /**
  *
@@ -26,6 +27,7 @@ public class TEDFFmpeg {
      */
     public static void main(String[] args) {
 
+        
         //makeVideo();
         ParseTED.Run();
   
