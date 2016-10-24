@@ -20,10 +20,10 @@ public class PageDAO {
             PreparedStatement ps;
             //если страница не новая
             if (page.getId() > 0) {
-                ps = con.prepareStatement("UPDATE en SET link_ted=?, title=?, author=?, author_link=?, description=?, tags=?, index=?, filmed=?, media_id=?, transcript=? WHERE id=?");
+                ps = con.prepareStatement("UPDATE en SET link_ted=?, title=?, author=?, author_link=?, description=?, tags=?, index=?, filmed=?, media_id=?, transcript=?, transcript_text=? WHERE id=?");
                 ps.setInt(11, page.getId());
             } else {
-                ps = con.prepareStatement("INSERT INTO en (`link_ted`, `title`, `author`, `author_link`, `description`, `tags`, `index`, `filmed`, `media_id`, `transcript`) VALUES (?,?,?,?,?,?,?,?,?,?)");
+                ps = con.prepareStatement("INSERT INTO en (`link_ted`, `title`, `author`, `author_link`, `description`, `tags`, `index`, `filmed`, `media_id`, `transcript`, `transcript`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             }
             
             ps.setString(1, page.getLinkTed());
@@ -36,6 +36,7 @@ public class PageDAO {
             ps.setString(8, page.getFilmed());
             ps.setString(9, page.getMediaId());
             ps.setString(10, page.getTranscript());
+            ps.setString(11, page.getTranscriptText());
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {

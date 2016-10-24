@@ -130,6 +130,7 @@ public class ParseTED {
         String index = "";
         String filmed = "";
         String transcript = "";
+        String transcriptText = "";        
 
         Document doc = null;
         try {
@@ -200,6 +201,7 @@ Pattern patternIndex = Pattern.compile("\"id\":(\\d*)");
         
         if(docTranscript != null)
         transcript = docTranscript.getElementsByClass("col-lg-7").html();
+        transcriptText = docTranscript.getElementsByClass("col-lg-7").text();
         
         Page page = new Page();
         page.setAuthor(author);
@@ -212,7 +214,7 @@ Pattern patternIndex = Pattern.compile("\"id\":(\\d*)");
         page.setTags(tags);
         page.setTitle(title);
         page.setTranscript(transcript);
-      
+        page.setTranscriptText(transcriptText);
                
         dao.updatePage(page);
         

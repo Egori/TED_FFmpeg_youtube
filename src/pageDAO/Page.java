@@ -13,6 +13,7 @@ public class Page {
     private String filmed = "";
     private String mediaId = "";
     private String transcript = "";
+    private String transcriptText = "";
 
     public void setId(int id) {
         this.id = id;
@@ -101,6 +102,14 @@ public class Page {
 
     public String getTranscript() {
         return transcript;
+    }
+    
+      public void setTranscriptText(String transcriptText) {
+        this.transcriptText = transcriptText;
+    }
+
+    public String getTranscriptText() {
+        return transcriptText;
     }
 
 }
