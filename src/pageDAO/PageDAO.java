@@ -23,7 +23,7 @@ public class PageDAO {
                 ps = con.prepareStatement("UPDATE en SET link_ted=?, title=?, author=?, author_link=?, description=?, tags=?, index=?, filmed=?, media_id=?, transcript=?, transcript_text=? WHERE id=?");
                 ps.setInt(11, page.getId());
             } else {
-                ps = con.prepareStatement("INSERT INTO en (`link_ted`, `title`, `author`, `author_link`, `description`, `tags`, `index`, `filmed`, `media_id`, `transcript`, `transcript`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+                ps = con.prepareStatement("INSERT INTO en (`link_ted`, `title`, `author`, `author_link`, `description`, `tags`, `index`, `filmed`, `media_id`, `transcript`, `transcript_text`) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             }
             
             ps.setString(1, page.getLinkTed());
